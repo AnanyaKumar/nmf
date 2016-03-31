@@ -5,7 +5,8 @@ function [ accuracies ] = evaluate_nmf( nmf_method, distance_method, nmf_sizes )
     acc_idx = 1;
     
     % Normalize the images
-    images = images * (1 ./ diag(diag(images' * images)));
+    image_norms = cellfun(@norm, num2cell(images, 1));
+    images = bsxfun(@rdivide, images, image_norms);
     disp(norm(images(:,1)));
     
     for nmf_size = nmf_sizes
