@@ -2,7 +2,6 @@ function [ accuracy ] = reconstruction_accuracy( distance_method, nmfs, test_ima
 % Test how "good" the NMF was based on reconstruction error
 
     accuracy = 0;
-    disp(['size: ', num2str(size(nmfs{1}, 2))]);
     num_tests = size(test_labels, 1);
     for test_num = 1:num_tests
         image = test_images(:,test_num);
@@ -12,7 +11,8 @@ function [ accuracy ] = reconstruction_accuracy( distance_method, nmfs, test_ima
         
         for guess_digit = 1:10
             T = nmfs{guess_digit};
-            proximity = 1.0/feval(distance_method, image, T);
+            distance = feval(distance_method, image, T);
+            proximity = 1.0/distance;
             assert(proximity > 0);
             if proximity > best_proximity
                 best_guess = guess_digit - 1;
@@ -21,7 +21,6 @@ function [ accuracy ] = reconstruction_accuracy( distance_method, nmfs, test_ima
         end
         assert(best_proximity > 0);
         assert(0 <= best_guess && best_guess <= 9);
-        % disp(['guess: ', num2str(best_guess), ', actual: ', num2str(label)]);
         if best_guess == label
             accuracy = accuracy + 1;
         end

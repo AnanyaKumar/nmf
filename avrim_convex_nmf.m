@@ -1,6 +1,6 @@
 function [ topics ] = avrim_convex_nmf( matrix, nmf_size )
     topics = matrix(:,1);
-    sample_size = 10;
+    sample_size = 15;
     for i = 1:nmf_size
         perm = randperm(size(matrix, 2));
         perm = perm(1:sample_size);
