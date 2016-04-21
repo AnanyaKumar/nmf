@@ -8,5 +8,6 @@ function [ intersection ] = line_intersect_circle(base, grad)
   c = sum(base.^2)-1;
   sol = (-b+sqrt(b^2-4*a*c))/(2*a);
   intersection = base+sol*grad;
+  assert(sol >= 0);
   assert(abs(norm(intersection)-1) < 0.0001);
 end

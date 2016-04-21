@@ -7,6 +7,6 @@ function [ topics ] = avrim_convex_nmf( matrix, nmf_size )
         sample = matrix(:,perm);
         dists = cellfun(@(x) convex_distance(x, topics), num2cell(sample,1));
         [~, idx] = max(dists);
-        topics = [topics, matrix(:,perm(idx))];
+        topics = [topics, sample(:,idx)];
     end
 end
