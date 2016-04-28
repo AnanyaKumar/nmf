@@ -12,7 +12,7 @@ function [ accuracies ] = evaluate_nmf_rce( nmf_method, distance_method, nmf_siz
     
     num_cv_trials = 5;
     num_tests = 300;
-    num_labels = 5000;
+    num_labels = 10000;
     assert(num_labels > 40);
             
     for nmf_size = nmf_sizes

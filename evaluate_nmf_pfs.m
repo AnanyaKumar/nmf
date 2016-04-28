@@ -39,11 +39,8 @@ function [ accuracies ] = evaluate_nmf_pfs( nmf_method, sup_method, approx_metho
             topics = feval(nmf_method, training_images1, nmf_size);
 
             % Get coefficients for each image on the whole set
-            coeffs = zeros(size(topics,2), size(training_images,2));
-            for i = 1:size(training_images,2)
-                img = training_images(:,i);
-                coeffs(:,i) = feval(approx_method, img, topics);
-            end
+            coeffs = cell2mat(cellfun(@(img) feval(approx_method, img, topics),...
+                num2cell(training_images,1),'UniformOutput', false));
             coeffs = coeffs';
 
             % Run supervised training algorithm
@@ -54,11 +51,8 @@ function [ accuracies ] = evaluate_nmf_pfs( nmf_method, sup_method, approx_metho
             % For each testing image, get coefficients
             % Run supervised prediction based on the coefficients
             disp('testing');
-            test_coeffs = zeros(size(topics,2), num_tests);
-            for i = 1:num_tests
-                img = test_images(:,i);
-                test_coeffs(:,i) = feval(approx_method, img, topics);
-            end
+            test_coeffs = cell2mat(cellfun(@(img) feval(approx_method, img, topics),...
+                num2cell(test_images(:,1:num_tests),1),'UniformOutput', false));
             test_coeffs = test_coeffs';
             pred = predict(trainer, test_coeffs);
             cur_accuracy = sum(pred == test_labels(1:num_tests)) / num_tests;
